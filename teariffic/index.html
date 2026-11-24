@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#fff4f8">
+  <title>Teariffic — Sip something lovely</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="assets/config.js"></script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" data-page="home"><span class="brand-mark">T</span><span>Teariffic<small>sip something lovely</small></span></a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+  <nav id="mainNav">
+    <a href="#" data-page="home">Home</a><a href="#" data-page="menu">Menu</a>
+    <a href="#" data-page="orders" class="auth-only hidden">My orders</a>
+    <a href="#" data-page="admin" class="staff-only hidden">Dashboard</a>
+    <a href="#" data-page="pos" class="staff-only hidden">POS</a>
+    <a href="#" data-page="cart">Cart <span id="cartCount" class="cart-count">0</span></a>
+    <button id="authButton" class="nav-pill">Sign in</button>
+  </nav>
+</header>
+
+<div id="toast" class="toast hidden" role="status"></div>
+<main id="app" class="site-main">
+  <section class="hero" id="homePage">
+    <div class="hero-copy"><span class="eyebrow">A LITTLE CUP OF HAPPY</span>
+      <h1>Make today<br><em>tea-riffic.</em></h1>
+      <p>Your favorite milk tea moments start here. Freshly brewed, perfectly mixed, and made just the way you like it.</p>
+      <div class="hero-actions"><button class="btn" data-page="menu">Explore the menu <span>→</span></button><button class="text-link" data-page="menu">Order for pickup</button></div>
+      <div class="hero-note">✦ &nbsp; Made fresh. Sipped happy.</div>
+    </div>
+    <div class="hero-art" aria-label="Illustration of a milk tea cup"><div class="blob"></div><div class="cup"><div class="cup-lid"></div><div class="straw"></div><div class="cup-logo">T<span>eariffic</span></div><div class="pearls">● ● ●<br> ● ● ●</div></div><span class="floating f1">♡</span><span class="floating f2">✿</span><span class="art-caption">good things<br>come in cups</span></div>
+  </section>
+  <section class="section" id="homeFeatures"><div class="section-heading"><div><span class="eyebrow">THE GOOD STUFF</span><h2>Little sips, big smiles.</h2></div><button class="text-link" data-page="menu">View full menu →</button></div>
+    <div class="feature-grid"><article class="feature-card pink"><span>🧋</span><h3>Classic favorites</h3><p>Comforting milk teas with perfectly chewy pearls.</p></article><article class="feature-card peach"><span>🥭</span><h3>Fruity & fresh</h3><p>Bright, refreshing blends for sunny kind of days.</p></article><article class="feature-card lilac"><span>🍵</span><h3>Special treats</h3><p>Unique flavors and creamy toppings worth a pause.</p></article></div>
+  </section>
+  <section class="order-banner" id="homeBanner"><div><span class="eyebrow">YOUR NEXT FAVORITE IS WAITING</span><h2>Good mood.<br>Great milk tea.</h2><p>Pick your flavor, make it yours, and we'll get it ready.</p></div><button class="btn btn-light" data-page="menu">Order now →</button><span class="banner-doodle">✿</span></section>
+
+  <section id="menuPage" class="page hidden">
+    <div class="page-intro"><span class="eyebrow">BREWED TO MAKE YOU SMILE</span><h1>Find your <em>happy sip.</em></h1><p>Choose a favorite, then customize it just how you like.</p></div>
+    <div id="categoryFilters" class="filter-row"></div><div id="productGrid" class="product-grid"><div class="loading">Loading the menu…</div></div>
+  </section>
+
+  <section id="cartPage" class="page hidden">
+    <div class="page-intro compact"><span class="eyebrow">ALMOST THERE</span><h1>Your <em>little cart.</em></h1></div>
+    <div id="cartContent"></div>
+  </section>
+
+  <section id="checkoutPage" class="page hidden">
+    <div class="page-intro compact"><span class="eyebrow">ONE LAST THING</span><h1>Ready to <em>order?</em></h1></div>
+    <div id="checkoutContent"></div>
+  </section>
+
+  <section id="ordersPage" class="page hidden">
+    <div class="page-intro compact"><span class="eyebrow">YOUR TEA TRAIL</span><h1>My <em>orders.</em></h1></div><div id="myOrdersContent"></div>
+  </section>
+
+  <section id="adminPage" class="page hidden">
+    <div class="dashboard-heading"><div><span class="eyebrow">YOUR SHOP AT A GLANCE</span><h1>Shop dashboard ♡</h1><p>Here's what's brewing at Teariffic.</p></div><button class="btn" data-page="pos">＋ New sale</button></div>
+    <div id="adminContent"></div>
+  </section>
+
+  <section id="posPage" class="page hidden">
+    <div class="dashboard-heading"><div><span class="eyebrow">COUNTER MODE</span><h1>Point of sale</h1><p>Record an in-store order in a few clicks.</p></div><button class="text-link" data-page="admin">← Dashboard</button></div>
+    <div id="posContent"></div>
+  </section>
+</main>
+
+<footer class="footer"><div><strong>Teariffic</strong><span>Made with pearls, tea & a little joy.</span></div><small>© <span id="year"></span> Teariffic Milk Tea. All rights reserved.</small></footer>
+
+<dialog id="authDialog" class="modal">
+  <form method="dialog" class="modal-close"><button aria-label="Close">×</button></form>
+  <div class="auth-tabs"><button class="active" data-auth-tab="login">Sign in</button><button data-auth-tab="signup">Create account</button></div>
+  <form id="authForm" class="auth-form">
+    <h2 id="authTitle">Welcome back!</h2><p id="authDescription">Sign in to order your favorite drinks.</p>
+    <label id="authNameWrap" class="hidden">Full name<input id="authName" autocomplete="name" maxlength="120"></label>
+    <label>Email address<input id="authEmail" type="email" required autocomplete="email"></label>
+    <label>Password<input id="authPassword" type="password" required minlength="8" autocomplete="current-password"></label>
+    <button class="btn btn-full" id="authSubmit">Sign in</button><p class="muted small" id="authHint">New to Teariffic? Create an account to keep track of your orders.</p>
+  </form>
+</dialog>
+<dialog id="productDialog" class="modal">
+  <form method="dialog" class="modal-close"><button aria-label="Close">×</button></form>
+  <form id="customizeForm" class="auth-form">
+    <h2 id="customProductName">Customize your drink</h2><p id="customProductDescription"></p>
+    <input id="customProductId" type="hidden">
+    <label>Size<select id="customSize"><option value="Regular">Regular</option><option value="Large">Large (+₱20)</option></select></label>
+    <label>Sugar level<select id="customSugar"><option>0%</option><option>25%</option><option>50%</option><option>75%</option><option selected>100%</option></select></label>
+    <label>Ice level<select id="customIce"><option>No ice</option><option>Less ice</option><option selected>Regular</option></select></label>
+    <div class="check-options"><label><input type="checkbox" value="Pearls"> Pearls (+₱15)</label><label><input type="checkbox" value="Coffee jelly"> Coffee jelly (+₱15)</label><label><input type="checkbox" value="Cheese foam"> Cheese foam (+₱15)</label><label><input type="checkbox" value="Pudding"> Pudding (+₱15)</label></div>
+    <button class="btn btn-full">Add to cart</button>
+  </form>
+</dialog>
+</body>
+</html>
